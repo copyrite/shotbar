@@ -1,6 +1,16 @@
+:root {
+    --crit-color: #95791b;
+    --hit-color: #72141c;
+    --graze-color: #468652;
+    --miss-color: #5c6060;
+    --text-color: #98c8c8;
+    --bg-color: #2d2921;
+    --fg-color: #040302;
+}
+
 body {
-    background-color: #040302;
-    color: #98c8c8;
+    background-color: var(--bg-color);
+    color: var(--text-color);
     text-align: center;
 }
 
@@ -43,4 +53,16 @@ input {
 #output div {
     display: inline-block;
     padding: 0 1em;
+}
+
+.fancy-shape {
+    background-color: var(--fg-color);
+    background-clip: padding-box;
+    border: 2px var(--text-color) solid;
+    border-radius: 16px;
+    margin: 1rem 2rem;
+}
+
+.fancy-shape > p {
+    margin: 1rem 2rem;
 }

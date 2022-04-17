@@ -22,6 +22,7 @@ window.onload = function () {
         .html("")
         .append("div")
         .attr("id", "input")
+        .attr("class", "fancy-shape")
         .append("p")
         .selectAll("div")
         .data([
@@ -40,7 +41,11 @@ window.onload = function () {
         .attr("value", (d) => d.value)
         .on("change", draw);
     d3.select("body").append("div").attr("id", "breakdown");
-    d3.select("body").append("div").attr("id", "output");
+    d3.select("body")
+        .append("div")
+        .attr("id", "output")
+        .attr("class", "fancy-shape")
+        .append("p");
 
     d3.select("body")
         .append("div")
@@ -341,7 +346,8 @@ function draw() {
         .selectAll("div")
         .data(demoted.breakdown)
         .join("div")
-        .append("span")
+        .attr("class", "fancy-shape")
+        .append("p")
         .text((d) => d.text)
         .append("br");
 
@@ -353,22 +359,21 @@ function draw() {
         .append("svg")
         .attr("width", dims.width)
         .attr("height", (d, i) => {
-            if (!Boolean(d.links)) {
-                return dims.singleHeightPx;
-            } else if (
-                demoted.breakdown[i - 1] != undefined &&
-                _.isEqual(
+            d.diff =
+                demoted.breakdown[i - 1] == undefined ||
+                !_.isEqual(
                     hitRankArray.map((e) => d.line2[e].value),
                     hitRankArray.map(
                         (e) => demoted.breakdown[i - 1].line2[e].value
                     )
-                )
-            ) {
-                return 0;
+                );
+            if (!d.links) {
+                return dims.singleHeightPx;
             }
             return dims.doubleHeightPx;
         })
-        .style("padding", "1em 0");
+        .style("display", (d) => (d.diff ? "" : "none"))
+        .style("margin", "0 0 1em");
 
     // SVG rects
     d3.select("#breakdown")
@@ -545,6 +550,7 @@ function draw() {
 
     // Text
     d3.select("#output")
+        .select("p")
         .selectAll("div")
         .data(hitRankArray)
         .join("div")
